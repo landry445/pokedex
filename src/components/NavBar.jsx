@@ -1,65 +1,36 @@
-import { useState } from 'react'
-import PokemonCard from './pokemonCard.jsx';
 
+import PropTypes from "prop-types";
 
+function NavBar({ pokemonIndex, setPokemonIndex, pokemonList }) {
+  const pickPrevious = () => setPokemonIndex(pokemonIndex - 1);
 
-
-
-function Navbar() {
-  const pokemonList = [
-    {
-        name: "bulbasaur",
-        imgSrc:
-          "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png",
-      },
-      {
-        name: "charmander",
-        imgSrc:
-          "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png",
-      },
-      {
-        name: "squirtle",
-        imgSrc:
-          "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/7.png",
-      },
-      {
-        name: "pikachu",
-        imgSrc:
-          "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
-      },
-      {
-        name: "mew",
-      },
-    ];
-  const [pokemonIndex , setpokemonIndex ] = useState(0)
- 
-  const handlePrevious = () => {
-    if (pokemonIndex > 0) {
-      setpokemonIndex(pokemonIndex - 1);
-    }
-  };
-
-  const handleNext = () => {
-    if (pokemonIndex < pokemonList.length - 1) {
-      setpokemonIndex(pokemonIndex + 1);
-    }
-  };
+  const pickNext = () => setPokemonIndex(pokemonIndex + 1);
 
   return (
-    <>
-    <div>
-      <PokemonCard pokemon={pokemonList[pokemonIndex]} />
-  </div>
-  <div>
-    <p>{setpokemonIndex}</p>
-    <button onClick={handlePrevious}>Précédent</button>
-  </div>
-  <div>
-    <p>{setpokemonIndex}</p>
-    <button onClick={handleNext}>Suivant</button>
-  </div>
-    </>
-    )
+    <nav>
+      {pokemonIndex > 0 && (
+        <button type="button" onClick={pickPrevious}>
+          previous
+        </button>
+      )}
+      {pokemonIndex < pokemonList.length - 1 && (
+        <button type="button" onClick={pickNext}>
+          next
+        </button>
+      )}
+    </nav>
+  );
 }
 
-export default Navbar
+NavBar.propTypes = {
+  pokemonIndex: PropTypes.number.isRequired,
+  setPokemonIndex: PropTypes.func.isRequired,
+  pokemonList: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      imgSrc: PropTypes.string,
+    })
+  ).isRequired,
+};
+
+export default NavBar;
